@@ -1,6 +1,6 @@
 # Trajr-paper - figures and statictics for the `trajr` paper
 
-This project contains all data and code used to generate figures and perform calculations used in the paper "Trajr: an R package for statistical characterisation of animal trajectories" which describes the `trajr` R package. To regenerate all figures and reports, run `source("analyse.R")`. Figures are generated in the `figure` directory, and text reports in the `reports` directory.
+This project contains all data and R code used to generate figures and perform calculations used in the paper "Trajr: an R package for statistical characterisation of animal trajectories" which describes the `trajr` R package. To regenerate all figures and reports, run `source("analyse.R")`. Figures are generated in the `figure` directory, and text reports in the `reports` directory.
 
 
 ## Environment
