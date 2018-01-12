@@ -1,0 +1,34 @@
+-----------------------------------------------------------------
+Summary of trajectories:
+Total 50 trajectories, 30 north, 20 south
+Number of trajectories approached by > 3 boats within 300m: 9 north (30%), 5 south (25%)
+Mean velocities:
+    Northern migration 6.5 km/h, direction ~28 degrees
+    Southern migration 3.2 km/h, direction ~190 degrees
+Mean swimming speeds: north 7.3 km/h, south 5.3 km/h
+-----------------------------------------------------------------
+Significant behavioural differences between northern and southern migrations.
+holm correction for multiple comparisons.
+Mean.speed: Welch Two Sample t-test
+    t = -4.6, df = 46.6, unadjusted p-value = 0
+    Means: isNorthern 7, not isNorthern 5
+Straightness: Welch Two Sample t-test
+    t = -2.9, df = 21.5, unadjusted p-value = 0.008
+    Means: isNorthern 0.9, not isNorthern 0.8
+
+=================================================================
+Significant behavioural differences between 4 or more boats approaching within 300 m
+holm correction for multiple comparisons.
+Adjusted p values
+
+Direction	Breach freq.	Tail swipe freq.	Mean speed	Mean downtime	Straightness	Sinuosity
+Northern	1	1	1	1	0.61	0.61
+Southern	1	1	1	0.38	1	0.01*
+
+-----------------------------------------------------------------
+Northern migration:
+-----------------------------------------------------------------
+Southern migration:
+Sinuosity: Welch Two Sample t-test
+    t = -3.6, df = 16.2, unadjusted p-value = 0.002
+    Means: too many boats 0.08, not too many boats 0.05
