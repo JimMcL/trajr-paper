@@ -75,7 +75,7 @@ ReadWhaleCSV <- function(filename, ...) {
   # Parse time column to a POSIXlt object
   coords$date <- strptime(coords$Time, "%Y-%m-%d %H:%M:%S")
   # Also convert date/time to seconds for easy comparison and duration calculations
-  coords$Time <- as.numeric(strftime(coords$date, "%s"))
+  coords$Time <- as.numeric(coords$date)
   
   # --- Project to a square coordinate system, in this case, Albers equal area
   # 1. Create a SpatialPointsDataFrame with just the longitude and latitude
