@@ -31,4 +31,4 @@ Northern migration:
 Southern migration:
 Sinuosity: Welch Two Sample t-test
     t = -3.6, df = 16.2, unadjusted p-value = 0.002
-    Means: too many boats 0.08, not too many boats 0.05
+    Means: Too many boats 0.08, not Too many boats 0.05

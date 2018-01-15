@@ -62,11 +62,11 @@ albers.proj4 <- "+proj=aea +lat_1=-18 +lat_2=-36 +lat_0=0 +lon_0=134 +x_0=0 +y_0
 
 
 # Whale trajectories are in CSV format with a row for each point and the
-# following columns: *pod* number, *latitude*, *longitude*, *Time*, *Behaviour*
-# and *Closest boat (m)*. Since latitude and longitude are not square
-# coordinates, they must be transformed before use. This is a function that
-# reads in the CSV file and converts everything to units that can be used by
-# `trajr`
+# following columns: Pod, Latitude, Longitude, Time, Behaviour,
+# Closest.boat..m., Boats...100, Boats...300, Boats...300.1. Since latitude and
+# longitude are not square coordinates, they must be transformed before use.
+# This is a function that reads in the CSV file and converts everything to units
+# that can be used by `trajr`
 ReadWhaleCSV <- function(filename, ...) {
   # Read in the file
   # Handle comments, even though they are not part of CSV
@@ -141,10 +141,8 @@ CalculateWhaleStatistics <- function(trjs) {
     list(
       # Northern or southern migration
       isNorthern = trjNorthernMigration(trj),
-      # Closest boat approach at any time
-      closest.boat = min(trj$Closest.boat..m.),
       # Were there ever more than 3 boats within 300 m
-      too.many.boats = max(trj$Boats...300 + trj$Boats...100) > 3,
+      Too.many.boats = max(trj$Boats...300 + trj$Boats...100) > 3,
       # Number of breaches / sec
       Breach.freq = length(grep(".*breach.*", trj$Behaviour, ignore.case = TRUE)) / duration,
       # Number of tail swipes / sec
@@ -191,8 +189,8 @@ SummariseWhalesByDirection <- function(trjs, stats) {
   
   nn <- sum(isNorthern)
   ns <- sum(!isNorthern)
-  ntm <- sum(stats[isNorthern, "too.many.boats"])
-  stm <- sum(stats[!isNorthern, "too.many.boats"])
+  ntm <- sum(stats[isNorthern, "Too.many.boats"])
+  stm <- sum(stats[!isNorthern, "Too.many.boats"])
   cat(sprintf("Total %d trajectories, %d north, %d south\n", length(trjs), nn, ns))
   cat(sprintf("Number of trajectories approached by > 3 boats within 300m: %d north (%g%%), %d south (%g%%)\n",
     ntm, 100 * ntm / nn, stm, 100 * stm / ns))
@@ -216,17 +214,29 @@ CompareWhaleTrajectories <- function(stats, term, alpha = 0.05, correction = "ho
   
   prettify <- function(str) gsub("freq", "freq.", gsub("\\.", " ", str))
   
-  behaviouralVars <- names(stats)[4:ncol(stats)]
+  behaviouralVars <- names(stats)[3:ncol(stats)]
   t <- lapply(behaviouralVars, function(response) t.test(reformulate(term, response), stats))
   # Adjust p values for multiple comparisons (reduce type I errors)
   p <- sapply(t, function(tt) tt$p.value)
   p <- p.adjust(p, correction)
   names(p) <- prettify(behaviouralVars)
-
+  
+  # Save t values
+  t.st <- sapply(t, function(tt) tt$statistic)
+  names(t.st) <- prettify(behaviouralVars)
+  
   diffs <- t[p < alpha]
 
   # Return adjusted p value and list of significant test results
-  list(p = round(p, 2), diffs = diffs)
+  list(p = round(p, 2), t = round(t.st, 2), diffs = diffs)
+}
+
+ReportAllWhaleParams <- function(trjs) {
+  params <- CalculateWhaleStatistics(trjs)
+  # Add a column for date-AM/PM
+  params$Date <- sapply(trjs, function(trj) strftime(trj$date[1], "%Y-%m-%d %P"))
+  names(params) <- gsub("\\.", " ", names(params))
+  print(params)
 }
 
 # Print a report of various whale statistics
@@ -254,8 +264,8 @@ ReportWhaleStats <- function(trjs) {
   cat(sprintf("%s correction for multiple comparisons.\n", correction))
   .ttlPrint(CompareWhaleTrajectories(whaleStats, "isNorthern", alpha = alpha, correction = correction)$diff)
   
-  north <- CompareWhaleTrajectories(whaleStats[whaleStats$isNorthern,], "too.many.boats", alpha = alpha, correction = correction)
-  south <- CompareWhaleTrajectories(whaleStats[!whaleStats$isNorthern,], "too.many.boats", alpha = alpha, correction = correction)
+  north <- CompareWhaleTrajectories(whaleStats[whaleStats$isNorthern,], "Too.many.boats", alpha = alpha, correction = correction)
+  south <- CompareWhaleTrajectories(whaleStats[!whaleStats$isNorthern,], "Too.many.boats", alpha = alpha, correction = correction)
   
   cat(sprintf("\n=================================================================\n"))
   cat(sprintf("Significant behavioural differences between 4 or more boats approaching within 300 m\n"))

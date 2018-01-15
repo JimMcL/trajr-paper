@@ -142,4 +142,5 @@ whaleTrjs <- ReadWhaleTrajectories()
 PlotToEPS(FigureFile(3, "eps"), { PlotWhaleTrajectories(whaleTrjs) }, width = 6, aspectRatio = ar, bg = "white")
 PlotToPng(FigureFile(3, "png"), { PlotWhaleTrajectories(whaleTrjs) }, width = 1800, aspectRatio = ar, res = 300)
 
+ReportToFile("whale-all-parameters.txt", { ReportAllWhaleParams(whaleTrjs) })
 ReportToFile("whale-report.txt", { ReportWhaleStats(whaleTrjs) })
