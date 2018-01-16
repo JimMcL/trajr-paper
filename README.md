@@ -1,6 +1,14 @@
 # Trajr-paper - figures and statictics for the `trajr` paper
 
-This project contains all data and R code used to generate figures and perform calculations used in the paper "Trajr: an R package for statistical characterisation of animal trajectories" which describes the `trajr` R package. To regenerate all figures and reports, run `source("analyse.R")`. Figures are generated in the `figure` directory, and text reports in the `reports` directory.
+This project contains all data and R code used to generate figures and perform calculations used in the paper "Trajr: an R package for statistical characterisation of animal trajectories" which describes the `trajr` R package. To regenerate all figures and reports, run `source("R/generate-figures-reports.R")`. Figures are generated in the `figure` directory, and text reports in the `reports` directory.
+
+To reproduce the clearwing moth examples, TODO
+
+## R files
+
+* `R/generate-figures-reports.R` code which generates all figures and text files. Calls functions in `R/whale-analysis.R` as required.
+
+* `R/whale-analysis.R` sample analysis for whale trajectories.
 
 
 ## Environment

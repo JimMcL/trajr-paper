@@ -1,4 +1,8 @@
-# Whale trajectory analysis
+# Whale trajectory analysis.
+#
+# This file defines a number of functions which read in and analyse multiple
+# whale trajectories from CSV files. See generate-figures-report.R for how the
+# functions may be used.
 
 library(rgdal)
 library(sp)
