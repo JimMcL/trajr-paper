@@ -2,14 +2,20 @@
 
 
 .colFromCategory <- function(category) {
+  # Bees are 2 (which defaults to red), wasps are 1 (black)
   ifelse(grepl("bee", category), 2, 1)
 }
 
-.pchFromCategory <- function(category, hollow = FALSE) {
-  if (hollow)
-    ifelse(grepl("mimic", category), 0, 2)
-  else
-    ifelse(grepl("mimic", category), 15, 17)
+# Returns a pch (point symbol) to use to plot a trajectory, based on category
+.pchFromCategory <- function(category) {
+  isMimic <- grepl("mimic", category)
+  isWasp <- grepl("wasp", category)
+
+  ifelse(isMimic & !isWasp, 15,                       # Bee mimic
+         ifelse(!isMimic & !isWasp, 17,               # Bee
+                ifelse(isMimic & isWasp, 22,          # Wasp mimic
+                       ifelse(!isMimic & isWasp, 24,  # Wasp
+                              8))))                   # Bug ;)
 }
 
 # Any slower than this speed is considered to be hovering
@@ -60,7 +66,7 @@ ReadClearwingTrajectories <- function() {
   file_list <- na.omit(file_list)
   # Remove 1 wasp trajectory which is atypical because the wasp landed 
   file_list <- file_list[!grepl("Pyrophleps_C0073xypts.csv", file_list$csv.file.name), ]
-  # Read in paths from CSV (actually tab-separated) files, convert to Trajectory objects, scale and smooth them
+  # Read in paths from CSV files, convert to Trajectory objects, scale and smooth them
   trjs <- TrajsBuild(file_list$csv.file.name, file_list$fps, file_list$scale, "m", rootDir = "data/clearwing-moths", smoothP = 3, smoothN = 101)
 
   # Calculate various parameters
@@ -93,19 +99,21 @@ PlotClearwingClusters <- function(params) {
   set.seed(1)
   centres <- 2
   km <- kmeans(scale(pca_able), centres)
-  #table(data.frame(file_list$category, km$cluster))
+  #table(data.frame(params$category, km$cluster))
   
   # PCA so we can plot in 2 dimensions
   par(mar = c(4, 4, 0, 0) + 0.1)
   pca <- prcomp(pca_able, scale. = TRUE)
-  plot(pca$x[, c(1, 2)], col = .colFromCategory(file_list$category), pch = .pchFromCategory(file_list$category))
+  bg <- "grey"
+  plot(pca$x[, c(1, 2)], col = .colFromCategory(params$category), pch = .pchFromCategory(params$category), bg = bg)
   # We assume that there is 1 cluster containing wasps and wasp mimics, and
   # another containing bees and bee mimics. Highlight any trajectories which
   # aren't in their expected cluster
-  mismatched <- km$cluster != .colFromCategory(file_list$category)
-  points(pca$x[mismatched, c(1, 2)], col = km$cluster[mismatched], pch = .pchFromCategory(file_list$category[mismatched], hollow = TRUE), cex = 3)
+  mismatched <- which(km$cluster != .colFromCategory(params$category))
+  points(pca$x[mismatched, c(1, 2)], pch = 1, cex = 3)
   legend("topleft", c("Bee", "Bee mimic", "Wasp", "Wasp mimic"), inset = c(0.01, 0.01),
          col = .colFromCategory(c("bee", "bee-mimic", "wasp", "wasp-mimic")),
+         pt.bg = bg,
          pch = .pchFromCategory(c("bee", "bee-mimic", "wasp", "wasp-mimic"))
   )
 }

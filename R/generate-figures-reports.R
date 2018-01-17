@@ -2,6 +2,7 @@
 
 library(trajr)
 source("R/whale-analysis.R")
+source("R/clearwing-analysis.R")
 
 # ============= General Functions ===============
 
@@ -123,7 +124,7 @@ randomTrajs <- function() {
   doLabel("c)")
 }
 
-# ============= End functions ===============
+# __________ End functions ______________
 
 
 #### Generate figures and reports ####
