@@ -126,8 +126,8 @@ ReadWhaleTrajectories <- function() {
 }
 
 
-# Calculate statistics for each trajectory
-CalculateWhaleStatistics <- function(trjs) {
+# Calculate indices for each trajectory
+CalculateWhaleIndices <- function(trjs) {
 
   # Define a function to calculate whatever values we need for a single trajectory
   statsFn <- function(trj) {
@@ -162,7 +162,7 @@ CalculateWhaleStatistics <- function(trjs) {
     )
   }
   
-  # Calculate movement parameters for each trajectory 
+  # Calculate movement indices for each trajectory 
   TrajsMergeStats(trjs, statsFn)
 }
 
@@ -236,7 +236,7 @@ CompareWhaleTrajectories <- function(stats, term, alpha = 0.05, correction = "ho
 }
 
 ReportAllWhaleParams <- function(trjs) {
-  params <- CalculateWhaleStatistics(trjs)
+  params <- CalculateWhaleIndices(trjs)
   # Add a column for date-AM/PM
   params$Date <- sapply(trjs, function(trj) strftime(trj$date[1], "%Y-%m-%d %P"))
   names(params) <- gsub("\\.", " ", names(params))
@@ -255,10 +255,10 @@ ReportWhaleStats <- function(trjs) {
   }
   .ttlPrint <- function(ttl) sapply(ttl, .ttPrint)
   
-  whaleStats <- CalculateWhaleStatistics(trjs)
+  whaleIndices <- CalculateWhaleIndices(trjs)
 
   cat(sprintf("-----------------------------------------------------------------\nSummary of trajectories:\n"))
-  SummariseWhalesByDirection(trjs, whaleStats)
+  SummariseWhalesByDirection(trjs, whaleIndices)
   
   alpha <- 0.05
   correction <- "holm"
@@ -266,10 +266,10 @@ ReportWhaleStats <- function(trjs) {
   cat(sprintf("\n-----------------------------------------------------------------\n"))
   cat(sprintf("Significant behavioural differences between northern and southern migrations.\n"))
   cat(sprintf("%s correction for multiple comparisons.\n", correction))
-  .ttlPrint(CompareWhaleTrajectories(whaleStats, "isNorthern", alpha = alpha, correction = correction)$diff)
+  .ttlPrint(CompareWhaleTrajectories(whaleIndices, "isNorthern", alpha = alpha, correction = correction)$diff)
   
-  north <- CompareWhaleTrajectories(whaleStats[whaleStats$isNorthern,], "Too.many.boats", alpha = alpha, correction = correction)
-  south <- CompareWhaleTrajectories(whaleStats[!whaleStats$isNorthern,], "Too.many.boats", alpha = alpha, correction = correction)
+  north <- CompareWhaleTrajectories(whaleIndices[whaleIndices$isNorthern,], "Too.many.boats", alpha = alpha, correction = correction)
+  south <- CompareWhaleTrajectories(whaleIndices[!whaleIndices$isNorthern,], "Too.many.boats", alpha = alpha, correction = correction)
   
   cat(sprintf("\n=================================================================\n"))
   cat(sprintf("Significant behavioural differences between 4 or more boats approaching within 300 m\n"))
