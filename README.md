@@ -7,7 +7,7 @@ To reproduce the clearwing moth example and generate figure 4, it is first neces
 
 ## R files
 
-* `R/generate-figures-reports.R` code which generates all figures and text files. Calls functions in `R/whale-analysis.R` and `R/clearwing-analysis.R` as required.
+* `R/generate-figures-reports.R` generates all figures and text files. It calls functions in `R/whale-analysis.R` and `R/clearwing-analysis.R` as required.
 
 * `R/whale-analysis.R` defines functions which implement the sample analysis for whale trajectories.
 

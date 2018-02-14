@@ -87,7 +87,7 @@ sampleTrajectories <- function() {
   #plotTrajectory("data/ant-mimics/3543.csv", scale = .220 / 720)
   # Crematogaster sp.
   plotTrajectory("data/ant-mimics/3548.csv", scale = .220 / 720, "a)")
-  ## Daerlac nigricans
+  # Daerlac nigricans
   plotTrajectory("data/ant-mimics/3530.csv", scale = .220 / 720, "b)")
   # Zodariidae sp.
   plotTrajectory("data/ant-mimics/3527.csv", scale = .220 / 720, "c)")
@@ -138,12 +138,12 @@ PlotToEPS(FigureFile(1, "eps"), sampleTrajectories, width = 6, aspectRatio = ar,
 # Word can't embed EPS anymore (security problem), so create PNG for temporarily adding to Word
 PlotToPng(FigureFile(1, "png"), sampleTrajectories, width = 1800, aspectRatio = ar, res = 300)
 
-ar = 2.5
+ar -> 2.5
 PlotToEPS(FigureFile(2, "eps"), randomTrajs, width = 6, aspectRatio = ar, bg = "white")
 PlotToPng(FigureFile(2, "png"), randomTrajs, width = 1800, aspectRatio = ar, res = 300)
 
 # Whale analysis example
-ar = 3 / 2
+ar -> 3 / 2
 whaleTrjs <- ReadWhaleTrajectories()
 PlotToEPS(FigureFile(3, "eps"), { PlotWhaleTrajectories(whaleTrjs) }, width = 6, aspectRatio = ar, bg = "white")
 PlotToPng(FigureFile(3, "png"), { PlotWhaleTrajectories(whaleTrjs) }, width = 1800, aspectRatio = ar, res = 300)
@@ -152,7 +152,7 @@ ReportToFile("whale-all-indices.txt", { ReportAllWhaleParams(whaleTrjs) })
 ReportToFile("whale-report.txt", { ReportWhaleStats(whaleTrjs) })
 
 # Clearwing moth example
-ar = 3 / 2
+ar -> 3 / 2
 clearwingParams <- ReadClearwingTrajectories()    # VERY slow to run
 PlotToEPS(FigureFile(4, "eps"), { PlotClearwingClusters(clearwingParams) }, width = 6, aspectRatio = ar, bg = "white")
 PlotToPng(FigureFile(4, "png"), { PlotClearwingClusters(clearwingParams) }, width = 1800, aspectRatio = ar, res = 300)
