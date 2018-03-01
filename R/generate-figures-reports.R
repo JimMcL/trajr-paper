@@ -93,22 +93,6 @@ sampleTrajectories <- function() {
   plotTrajectory("data/ant-mimics/3527.csv", scale = .220 / 720, "c)")
 }
 
-scaleVaryingFractalIndices <- function() {
-  .pf <- function(trj, min = 1, max = 100, adjustD = TRUE, ...) {
-    v <- TrajFractalDimensionValues(trj, TrajLogSequence(min, max, 20), adjustD = adjustD)
-    plot(v, pch = 16, log = "xy", ...)
-    y <- log(v[,2])
-    x <- log(v[,1])
-    abline(lm(v[, 2] ~ v[, 1]), untf = TRUE)
-  }
-  par(mfrow = c(3, 1))
-  crw <- TrajGenerate(10)
-  .pf(crw, max = 5)
-  fw <- TrajGenerate(linearErrorDist = function(n) runif(n, .1, 100))
-  .pf(fw)
-  bw <- TrajGenerate(angularErrorDist = function(n) runif(n, -pi, pi), linearErrorDist = function(n) runif(n, .1, 100))
-  .pf(bw)
-}
 
 randomTrajs <- function() {
   set.seed(41)
@@ -138,21 +122,22 @@ PlotToEPS(FigureFile(1, "eps"), sampleTrajectories, width = 6, aspectRatio = ar,
 # Word can't embed EPS anymore (security problem), so create PNG for temporarily adding to Word
 PlotToPng(FigureFile(1, "png"), sampleTrajectories, width = 1800, aspectRatio = ar, res = 300)
 
-ar -> 2.5
+ar <- 2.5
 PlotToEPS(FigureFile(2, "eps"), randomTrajs, width = 6, aspectRatio = ar, bg = "white")
 PlotToPng(FigureFile(2, "png"), randomTrajs, width = 1800, aspectRatio = ar, res = 300)
 
 # Whale analysis example
-ar -> 3 / 2
+ar <- 3 / 2
 whaleTrjs <- ReadWhaleTrajectories()
 PlotToEPS(FigureFile(3, "eps"), { PlotWhaleTrajectories(whaleTrjs) }, width = 6, aspectRatio = ar, bg = "white")
 PlotToPng(FigureFile(3, "png"), { PlotWhaleTrajectories(whaleTrjs) }, width = 1800, aspectRatio = ar, res = 300)
 
 ReportToFile("whale-all-indices.txt", { ReportAllWhaleParams(whaleTrjs) })
+ReportToFile("whale-all-indices.csv", { ReportAllWhaleParams(whaleTrjs, asCSV = TRUE) })
 ReportToFile("whale-report.txt", { ReportWhaleStats(whaleTrjs) })
 
 # Clearwing moth example
-ar -> 3 / 2
+ar <- 3 / 2
 clearwingParams <- ReadClearwingTrajectories()    # VERY slow to run
 PlotToEPS(FigureFile(4, "eps"), { PlotClearwingClusters(clearwingParams) }, width = 6, aspectRatio = ar, bg = "white")
 PlotToPng(FigureFile(4, "png"), { PlotClearwingClusters(clearwingParams) }, width = 1800, aspectRatio = ar, res = 300)

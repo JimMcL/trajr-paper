@@ -130,12 +130,12 @@ ReadWhaleTrajectories <- function() {
 CalculateWhaleIndices <- function(trjs) {
 
   # Define a function to calculate whatever values we need for a single trajectory
-  statsFn <- function(trj) {
+  indicesForTrj <- function(trj) {
     duration <- trjDuration(trj)
     meanSpeed <- TrajLength(trj) / duration
     
     # A trajectory consists of possibly many observations during each up-time,
-    # and no observations during a downtime. Assume a dive is any down time
+    # and no observations during a downtime. We assume a dive is any down time
     # longer than 120 seconds, following Gulesserian (2011)
     diveCutoff <- 120
     stepTimes <- diff(trj$displacementTime)
@@ -163,7 +163,7 @@ CalculateWhaleIndices <- function(trjs) {
   }
   
   # Calculate movement indices for each trajectory 
-  TrajsMergeStats(trjs, statsFn)
+  TrajsMergeStats(trjs, indicesForTrj)
 }
 
 # Plots all trajectories on a map. Trajectories are coloured based on the migration direction.
@@ -235,12 +235,15 @@ CompareWhaleTrajectories <- function(stats, term, alpha = 0.05, correction = "ho
   list(p = round(p, 2), t = round(t.st, 2), diffs = diffs)
 }
 
-ReportAllWhaleParams <- function(trjs) {
+ReportAllWhaleParams <- function(trjs, asCSV = FALSE) {
   params <- CalculateWhaleIndices(trjs)
   # Add a column for date-AM/PM
   params$Date <- sapply(trjs, function(trj) strftime(trj$date[1], "%Y-%m-%d %P"))
   names(params) <- gsub("\\.", " ", names(params))
-  print(params)
+  if (asCSV)
+    write.csv(params)
+  else
+    print(params)
 }
 
 # Print a report of various whale statistics
