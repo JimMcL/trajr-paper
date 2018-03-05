@@ -139,5 +139,5 @@ ReportToFile("whale-report.txt", { ReportWhaleStats(whaleTrjs) })
 # Clearwing moth example
 ar <- 3 / 2
 clearwingParams <- ReadClearwingTrajectories()    # VERY slow to run
-PlotToEPS(FigureFile(4, "eps"), { PlotClearwingClusters(clearwingParams) }, width = 6, aspectRatio = ar, bg = "white")
-PlotToPng(FigureFile(4, "png"), { PlotClearwingClusters(clearwingParams) }, width = 1800, aspectRatio = ar, res = 300)
+PlotToEPS(FigureFile(4, "eps"), { PlotClearwingPCA(clearwingParams) }, width = 6, aspectRatio = ar, bg = "white")
+PlotToPng(FigureFile(4, "png"), { PlotClearwingPCA(clearwingParams) }, width = 1800, aspectRatio = ar, res = 300)

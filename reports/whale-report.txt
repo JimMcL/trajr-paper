@@ -6,6 +6,16 @@ Mean velocities:
     Northern migration 6.5 km/h, direction ~28 degrees
     Southern migration 3.2 km/h, direction ~190 degrees
 Mean swimming speeds: north 7.3 km/h, south 5.3 km/h
+
+-----------------------------------------------------------------
+Selected trajectory index values:
+,Breach.freq,Mean.speed,Sinuosity,Date
+1,0.00,7.7,0.034,2010-06-08 pm
+2,0.00,6.9,0.022,2010-06-09 pm
+3,0.64,7.1,0.058,2010-06-11 am
+4,0.00,8.5,0.023,2010-06-11 pm
+5,0.00,9.5,0.016,2010-06-12 am
+
 -----------------------------------------------------------------
 Significant behavioural differences between northern and southern migrations.
 holm correction for multiple comparisons.

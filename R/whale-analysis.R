@@ -147,8 +147,8 @@ CalculateWhaleIndices <- function(trjs) {
       isNorthern = trjNorthernMigration(trj),
       # Were there ever more than 3 boats within 300 m
       Too.many.boats = max(trj$Boats...300 + trj$Boats...100) > 3,
-      # Number of breaches / sec
-      Breach.freq = length(grep(".*breach.*", trj$Behaviour, ignore.case = TRUE)) / duration,
+      # Number of breaches / hour
+      Breach.freq = 60 * 60 * length(grep(".*breach.*", trj$Behaviour, ignore.case = TRUE)) / duration,
       # Number of tail swipes / sec
       Tail.swipe.freq = length(grep(".*swipe.*", trj$Behaviour, ignore.case = TRUE)) / duration,
       # Mean speed (km/h) along entire trajectory
@@ -235,10 +235,14 @@ CompareWhaleTrajectories <- function(stats, term, alpha = 0.05, correction = "ho
   list(p = round(p, 2), t = round(t.st, 2), diffs = diffs)
 }
 
+CreateWhaleDateColumn <- function(trjs) {
+  sapply(trjs, function(trj) strftime(trj$date[1], "%Y-%m-%d %P"))
+}
+
 ReportAllWhaleParams <- function(trjs, asCSV = FALSE) {
   params <- CalculateWhaleIndices(trjs)
   # Add a column for date-AM/PM
-  params$Date <- sapply(trjs, function(trj) strftime(trj$date[1], "%Y-%m-%d %P"))
+  params$Date <- CreateWhaleDateColumn(trjs)
   names(params) <- gsub("\\.", " ", names(params))
   if (asCSV)
     write.csv(params)
@@ -262,6 +266,10 @@ ReportWhaleStats <- function(trjs) {
 
   cat(sprintf("-----------------------------------------------------------------\nSummary of trajectories:\n"))
   SummariseWhalesByDirection(trjs, whaleIndices)
+  
+  cat(sprintf("\n\n-----------------------------------------------------------------\nSelected trajectory index values:\n"))
+  brief <- cbind(whaleIndices[1:5, c("Breach.freq", "Mean.speed", "Sinuosity")], Date = CreateWhaleDateColumn(trjs)[1:5])
+  write.csv(format(brief, digits = 2), file = "", quote = FALSE)
   
   alpha <- 0.05
   correction <- "holm"
