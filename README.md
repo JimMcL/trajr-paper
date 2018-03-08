@@ -4,6 +4,8 @@ This project contains data and R code used to generate figures and perform calcu
 
 To reproduce the clearwing moth example and generate figure 4, it is first necessary to download the moth, bee and wasp trajectory files into the directory `data/clearwing-moths`. The files are accessable at (https://doi.org/10.5061/dryad.682dc).
 
+The statistical analyses in these examples are intended to show how such how such analyses may be implemented in R, and are not recommendations for statistical treatments to be applied to trajectory indices.
+
 
 ## R files
 
