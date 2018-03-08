@@ -167,7 +167,7 @@ CalculateWhaleIndices <- function(trjs) {
 }
 
 # Plots all trajectories on a map. Trajectories are coloured based on the migration direction.
-PlotWhaleTrajectories <- function(trjs) {
+PlotWhaleTrajectories <- function(trjs, textSize = 12, lineWidth = 1) {
   # Draw a map of the area. Hardwire zoom level because auto doesn't do a good job
   xlim <- range(sapply(trjs, function(trj) range(trj$Longitude)))
   ylim <- range(sapply(trjs, function(trj) range(trj$Latitude)))
@@ -178,9 +178,10 @@ PlotWhaleTrajectories <- function(trjs) {
   for(trj in trjs) {
     d <- trj
     d$Direction <- ifelse(trjNorthernMigration(trj), "Northern migration", "Southern migration")
-    m <- m + geom_path(data = d, aes(x = Longitude, y = Latitude, color = Direction))
+    m <- m + geom_path(data = d, aes(x = Longitude, y = Latitude, color = Direction), size = lineWidth)
   }
   m <- m + scale_color_manual(values=c(NORTH_COL, SOUTH_COL))
+  m <- m + theme(text = element_text(size = textSize))
   plot(m)
 }
 

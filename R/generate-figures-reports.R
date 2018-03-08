@@ -69,12 +69,11 @@ doLabel <- function(label) {
 }
 
 plotTrajectory <- function(filename, scale, label){
-  ## Daerlac nigricans
   trj <- TrajFromCoords(read.csv(filename, stringsAsFactors = FALSE), 
                         xCol = "x", yCol = "y", timeCol = "Time")
   trj <- TrajScale(trj, scale = scale, units = "m")
   
-  plot(trj)
+  plot(trj, lwd = 2)
   doLabel(label)
 }
 
@@ -97,18 +96,19 @@ sampleTrajectories <- function() {
 randomTrajs <- function() {
   set.seed(41)
   
+  lwd = 2
   par(mfrow = c(1, 3), mar = c(4, 4, 1, 0) + .1)
   trj <- TrajGenerate(n = 100)
-  plot(trj)
+  plot(trj, lwd = lwd)
   doLabel("a)")
   
   trj <- TrajGenerate(n = 50, random = FALSE)
-  plot(trj)
+  plot(trj, lwd = lwd)
   doLabel("b)")
   
   set.seed(2)
   trj <- TrajGenerate(n = 50, linearErrorDist = stats::rcauchy, angularErrorDist = function(n) runif(n, -pi, pi))
-  plot(trj)
+  plot(trj, lwd = lwd)
   doLabel("c)")
 }
 
@@ -118,18 +118,18 @@ randomTrajs <- function() {
 #### Generate figures and reports ####
 
 ar <- 2
-PlotToEPS(FigureFile(1, "eps"), sampleTrajectories, width = 6, aspectRatio = ar, bg = "white")
+PlotToEPS(FigureFile(1, "eps"), sampleTrajectories, width = 18, aspectRatio = ar, pointsize = 36, bg = "white")
 # Word can't embed EPS anymore (security problem), so create PNG for temporarily adding to Word
 PlotToPng(FigureFile(1, "png"), sampleTrajectories, width = 1800, aspectRatio = ar, res = 300)
 
 ar <- 2.5
-PlotToEPS(FigureFile(2, "eps"), randomTrajs, width = 6, aspectRatio = ar, bg = "white")
+PlotToEPS(FigureFile(2, "eps"), randomTrajs, width = 18, aspectRatio = ar, pointsize = 36, bg = "white")
 PlotToPng(FigureFile(2, "png"), randomTrajs, width = 1800, aspectRatio = ar, res = 300)
 
 # Whale analysis example
 ar <- 3 / 2
 whaleTrjs <- ReadWhaleTrajectories()
-PlotToEPS(FigureFile(3, "eps"), { PlotWhaleTrajectories(whaleTrjs) }, width = 6, aspectRatio = ar, bg = "white")
+PlotToEPS(FigureFile(3, "eps"), { PlotWhaleTrajectories(whaleTrjs, 24, 1.1) }, width = 18, aspectRatio = ar, bg = "white")
 PlotToPng(FigureFile(3, "png"), { PlotWhaleTrajectories(whaleTrjs) }, width = 1800, aspectRatio = ar, res = 300)
 
 ReportToFile("whale-all-indices.txt", { ReportAllWhaleParams(whaleTrjs) })
@@ -139,5 +139,5 @@ ReportToFile("whale-report.txt", { ReportWhaleStats(whaleTrjs) })
 # Clearwing moth example
 ar <- 3 / 2
 clearwingParams <- ReadClearwingTrajectories()    # VERY slow to run
-PlotToEPS(FigureFile(4, "eps"), { PlotClearwingPCA(clearwingParams) }, width = 6, aspectRatio = ar, bg = "white")
+PlotToEPS(FigureFile(4, "eps"), { PlotClearwingPCA(clearwingParams, lwd = 2) }, width = 18, aspectRatio = ar, pointsize = 32, bg = "white")
 PlotToPng(FigureFile(4, "png"), { PlotClearwingPCA(clearwingParams) }, width = 1800, aspectRatio = ar, res = 300)

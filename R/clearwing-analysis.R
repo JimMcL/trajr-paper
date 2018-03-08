@@ -87,7 +87,7 @@ ReadClearwingTrajectories <- function(debug = FALSE) {
 
 # Plots a PCA and optional cluster analysis of clearwing trajectories.
 #
-PlotClearwingPCA <- function(indices, showClusters = FALSE) {
+PlotClearwingPCA <- function(indices, lwd = 1, showClusters = FALSE) {
   # First columns are from the file list and contain species, category etc.
   # There are 12 calculated indices (defined in clearwing_traj_indices),
   # and they are the last columns
@@ -109,7 +109,7 @@ PlotClearwingPCA <- function(indices, showClusters = FALSE) {
   par(mar = c(4, 4, 0, 0) + 0.1)
   pca <- prcomp(pca_able, scale. = TRUE)
   bg <- "#efefef"
-  plot(pca$x[, c(1, 2)], col = .colFromCategory(indices$category), pch = .pchFromCategory(indices$category), bg = bg)
+  plot(pca$x[, c(1, 2)], col = .colFromCategory(indices$category), pch = .pchFromCategory(indices$category), lwd = lwd, bg = bg)
   if (showClusters) {
     # We assume that there is 1 cluster containing wasps and wasp mimics, and
     # another containing bees and bee mimics. Highlight any trajectories which
