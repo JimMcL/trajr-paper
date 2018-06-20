@@ -1,6 +1,6 @@
 # Trajr-paper - figures, analysis and examples for the `trajr` paper
 
-This project contains data and R code used to generate figures and perform calculations used in the paper "Trajr: an R package for characterisation of animal trajectories" which describes the [`trajr`](https://cran.r-project.org/package=trajr) R package for analysing animal trajectories. As such, it provides small, self-contained examples of use of the package. To regenerate all figures and reports, run `source("R/generate-figures-reports.R")`. Figures are generated in the `figures` directory, and text reports in the `reports` directory. 
+This project contains data and R code used to generate figures and perform calculations used in the paper ["Trajr: an R package for characterisation of animal trajectories"](https://onlinelibrary.wiley.com/doi/abs/10.1111/eth.12739) which describes the [`trajr`](https://cran.r-project.org/package=trajr) R package for analysing animal trajectories. As such, it provides small, self-contained examples of use of the package. To regenerate all figures and reports, run `source("R/generate-figures-reports.R")`. Figures are generated in the `figures` directory, and text reports in the `reports` directory. 
 
 To reproduce the clearwing moth example and generate figure 4, it is first necessary to download the moth, bee and wasp trajectory files into the directory `data/clearwing-moths`. The files are accessable at (https://doi.org/10.5061/dryad.682dc).
 
